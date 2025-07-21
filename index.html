@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>آلة حاسبة</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .light-mode {
+      background: #f4f4f4;
+      color: #000;
+    }
+
+    .dark-mode {
+      background: #111;
+      color: white;
+    }
+
+    .calculator {
+      background: inherit;
+      padding: 20px;
+      border-radius: 15px;
+      width: 320px;
+      box-shadow: 0 0 10px #00000050;
+      transition: background 0.3s;
+    }
+
+    .display {
+      background: #000;
+      color: lime;
+      font-size: 2em;
+      padding: 10px;
+      text-align: right;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      height: 50px;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    button {
+      padding: 20px;
+      font-size: 1.2em;
+      background: #444;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: #666;
+    }
+
+    button.operator { background: #ff9500; }
+    button.equal    { background: #28a745; }
+    button.clear    { background: #dc3545; }
+    button.mode     { background: #007bff; }
+    button.back     { background: #6c757d; }
+
+    .credit {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .credit a {
+      color: #00acee;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .credit a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body class="dark-mode">
+  <div class="credit">
+    <div>Made by 7amodPro</div>
+    <div>yt channel here</div>
+    <a href="https://youtube.com/@im7amodpro?si=x7W3J-i2OCVYmMtW" target="_blank">My YouTube Channel</a>
+  </div>
+
+  <div class="calculator">
+    <div class="display" id="display">0</div>
+    <div class="buttons">
+      <button onclick="clearDisplay()" class="clear">C</button>
+      <button onclick="deleteLast()" class="back">←</button>
+      <button onclick="toggleMode()" class="mode">🌗</button>
+      <button onclick="appendValue('/')" class="operator">÷</button>
+
+      <button onclick="appendValue('7')">7</button>
+      <button onclick="appendValue('8')">8</button>
+      <button onclick="appendValue('9')">9</button>
+      <button onclick="appendValue('*')" class="operator">×</button>
+
+      <button onclick="appendValue('4')">4</button>
+      <button onclick="appendValue('5')">5</button>
+      <button onclick="appendValue('6')">6</button>
+      <button onclick="appendValue('-')" class="operator">−</button>
+
+      <button onclick="appendValue('1')">1</button>
+      <button onclick="appendValue('2')">2</button>
+      <button onclick="appendValue('3')">3</button>
+      <button onclick="appendValue('+')" class="operator">+</button>
+
+      <button onclick="appendValue('0')">0</button>
+      <button onclick="appendValue('.')">.</button>
+      <button onclick="calculate()" class="equal" style="grid-column: span 2">=</button>
+    </div>
+  </div>
+
+  <script>
+    const display = document.getElementById('display');
+    const body = document.body;
+
+    function appendValue(value) {
+      if (display.innerText === '0' || display.innerText === 'خطأ') {
+        display.innerText = value;
+      } else {
+        display.innerText += value;
+      }
+    }
+
+    function clearDisplay() {
+      display.innerText = '0';
+    }
+
+    function deleteLast() {
+      if (display.innerText.length > 1) {
+        display.innerText = display.innerText.slice(0, -1);
+      } else {
+        display.innerText = '0';
+      }
+    }
+
+    function calculate() {
+      try {
+        display.innerText = eval(display.innerText);
+      } catch {
+        display.innerText = 'خطأ';
+      }
+    }
+
+    function toggleMode() {
+      body.classList.toggle('dark-mode');
+      body.classList.toggle('light-mode');
+    }
+  </script>
+</body>
+</html>
