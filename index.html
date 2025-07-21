@@ -1,166 +1,336 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl" data-theme="light">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>آلة حاسبة</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      transition: background 0.3s, color 0.3s;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>آلة حاسبة علمية متقدمة - 7amodPro</title>
+<style>
+  :root {
+    --bg-light: #f5f5f5;
+    --text-light: #222;
+    --btn-light: #ddd;
+    --btn-hover-light: #ccc;
+    --accent-light: #1976d2;
 
-    .light-mode {
-      background: #f4f4f4;
-      color: #000;
-    }
+    --bg-dark: #121212;
+    --text-dark: #eee;
+    --btn-dark: #333;
+    --btn-hover-dark: #444;
+    --accent-dark: #90caf9;
+  }
 
-    .dark-mode {
-      background: #111;
-      color: white;
-    }
+  [data-theme="light"] {
+    --bg: var(--bg-light);
+    --text: var(--text-light);
+    --btn: var(--btn-light);
+    --btn-hover: var(--btn-hover-light);
+    --accent: var(--accent-light);
+  }
 
-    .calculator {
-      background: inherit;
-      padding: 20px;
-      border-radius: 15px;
-      width: 320px;
-      box-shadow: 0 0 10px #00000050;
-      transition: background 0.3s;
-    }
+  [data-theme="dark"] {
+    --bg: var(--bg-dark);
+    --text: var(--text-dark);
+    --btn: var(--btn-dark);
+    --btn-hover: var(--btn-hover-dark);
+    --accent: var(--accent-dark);
+  }
 
-    .display {
-      background: #000;
-      color: lime;
-      font-size: 2em;
-      padding: 10px;
-      text-align: right;
-      border-radius: 10px;
-      margin-bottom: 15px;
-      height: 50px;
-    }
+  body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    transition: background 0.3s, color 0.3s;
+    flex-direction: column;
+  }
 
-    .buttons {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-    }
+  .calculator-container {
+    max-width: 400px;
+    width: 95%;
+    background: var(--bg);
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.25);
+    display: flex;
+    flex-direction: column;
+  }
 
+  header {
+    background: var(--accent);
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.3rem;
+    user-select: none;
+    position: relative;
+    border-radius: 12px 12px 0 0;
+  }
+
+  header a {
+    color: white;
+    text-decoration: none;
+    font-weight: normal;
+    font-size: 0.9rem;
+    display: block;
+    margin-top: 5px;
+  }
+
+  #display {
+    background: var(--btn);
+    color: var(--text);
+    font-size: 2.2rem;
+    padding: 15px 20px;
+    text-align: right;
+    word-wrap: break-word;
+    min-height: 60px;
+    user-select: text;
+  }
+
+  /* شبكة الأزرار الأساسية */
+  .buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    padding: 15px;
+  }
+
+  /* شبكة الأزرار المتقدمة أسفل */
+  .advanced-buttons {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    padding: 10px 15px 25px 15px;
+    background: var(--btn);
+    border-radius: 0 0 12px 12px;
+  }
+
+  button {
+    background: var(--btn);
+    border: none;
+    border-radius: 8px;
+    padding: 18px 0;
+    font-size: 1.2rem;
+    color: var(--text);
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+  }
+
+  button:hover {
+    background: var(--btn-hover);
+  }
+
+  button.operator {
+    background: var(--accent);
+    color: white;
+  }
+
+  button.equal {
+    background: #4caf50;
+    color: white;
+    grid-column: span 4;
+  }
+
+  button.memory {
+    background: #ff9800;
+    color: white;
+  }
+
+  /* زر الوضع الليلي أسفل */
+  .theme-toggle-container {
+    margin-top: 12px;
+    text-align: center;
+  }
+
+  .theme-toggle-container button {
+    background: var(--accent);
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    border-radius: 12px;
+    padding: 10px 20px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.3s;
+  }
+
+  .theme-toggle-container button:hover {
+    background: #145a86;
+  }
+
+  /* تصغير الخط والأزرار على الشاشات الصغيرة */
+  @media (max-width: 450px) {
+    #display {
+      font-size: 1.5rem;
+      padding: 10px 15px;
+      min-height: 45px;
+    }
     button {
-      padding: 20px;
-      font-size: 1.2em;
-      background: #444;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background 0.2s;
+      font-size: 1rem;
+      padding: 12px 0;
     }
-
-    button:hover {
-      background: #666;
+    .advanced-buttons {
+      grid-template-columns: repeat(3, 1fr);
     }
-
-    button.operator { background: #ff9500; }
-    button.equal    { background: #28a745; }
-    button.clear    { background: #dc3545; }
-    button.mode     { background: #007bff; }
-    button.back     { background: #6c757d; }
-
-    .credit {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .credit a {
-      color: #00acee;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .credit a:hover {
-      text-decoration: underline;
-    }
-  </style>
+  }
+</style>
 </head>
-<body class="dark-mode">
-  <div class="credit">
-    <div>Made by 7amodPro</div>
-    <div>yt channel here</div>
-    <a href="https://youtube.com/@im7amodpro?si=x7W3J-i2OCVYmMtW" target="_blank">My YouTube Channel</a>
+<body>
+
+<div class="calculator-container" role="application" aria-label="آلة حاسبة علمية متقدمة">
+  <header>
+    Advanced Calculator by 7amodPro
+    <a href="https://youtube.com/@im7amodpro" target="_blank" rel="noopener noreferrer">زور قناتي على يوتيوب</a>
+  </header>
+
+  <div id="display" aria-live="polite" aria-atomic="true">0</div>
+
+  <div class="buttons-grid" role="region" aria-label="الأزرار الأساسية">
+    <button class="memory" onclick="memoryClear()" title="مسح الذاكرة">MC</button>
+    <button class="memory" onclick="memoryRecall()" title="استدعاء من الذاكرة">MR</button>
+    <button class="memory" onclick="memoryAdd()" title="إضافة إلى الذاكرة">M+</button>
+    <button class="memory" onclick="memorySubtract()" title="طرح من الذاكرة">M-</button>
+
+    <button onclick="clearDisplay()" title="مسح الكل">C</button>
+    <button onclick="backspace()" title="حذف آخر رقم">⌫</button>
+    <button onclick="toggleSign()" title="تبديل الإشارة">±</button>
+    <button onclick="appendText('%')" class="operator" title="النسبة المئوية">%</button>
+
+    <button onclick="appendText('7')">7</button>
+    <button onclick="appendText('8')">8</button>
+    <button onclick="appendText('9')">9</button>
+    <button onclick="appendText('-')" class="operator" title="طرح">−</button>
+
+    <button onclick="appendText('4')">4</button>
+    <button onclick="appendText('5')">5</button>
+    <button onclick="appendText('6')">6</button>
+    <button onclick="appendText('*')" class="operator" title="ضرب">×</button>
+
+    <button onclick="appendText('1')">1</button>
+    <button onclick="appendText('2')">2</button>
+    <button onclick="appendText('3')">3</button>
+    <button onclick="appendText('+')" class="operator" title="جمع">+</button>
+
+    <button onclick="appendText('0')">0</button>
+    <button onclick="appendText('.')">.</button>
+    <button onclick="appendText('/')" class="operator" title="قسمة">÷</button>
   </div>
 
-  <div class="calculator">
-    <div class="display" id="display">0</div>
-    <div class="buttons">
-      <button onclick="clearDisplay()" class="clear">C</button>
-      <button onclick="deleteLast()" class="back">←</button>
-      <button onclick="toggleMode()" class="mode">🌗</button>
-      <button onclick="appendValue('/')" class="operator">÷</button>
+  <button onclick="calculate()" class="equal" title="يساوي">=</button>
 
-      <button onclick="appendValue('7')">7</button>
-      <button onclick="appendValue('8')">8</button>
-      <button onclick="appendValue('9')">9</button>
-      <button onclick="appendValue('*')" class="operator">×</button>
-
-      <button onclick="appendValue('4')">4</button>
-      <button onclick="appendValue('5')">5</button>
-      <button onclick="appendValue('6')">6</button>
-      <button onclick="appendValue('-')" class="operator">−</button>
-
-      <button onclick="appendValue('1')">1</button>
-      <button onclick="appendValue('2')">2</button>
-      <button onclick="appendValue('3')">3</button>
-      <button onclick="appendValue('+')" class="operator">+</button>
-
-      <button onclick="appendValue('0')">0</button>
-      <button onclick="appendValue('.')">.</button>
-      <button onclick="calculate()" class="equal" style="grid-column: span 2">=</button>
-    </div>
+  <div class="advanced-buttons" role="region" aria-label="العمليات المتقدمة">
+    <button onclick="appendText('Math.sqrt(')" title="الجذر التربيعي">√</button>
+    <button onclick="appendText('**2')" title="تربيع">x²</button>
+    <button onclick="appendText('**')" title="أس">xʸ</button>
+    <button onclick="appendText('1/(')" title="مقلوب الرقم">¹⁄ₓ</button>
+    <button onclick="appendText('Math.abs(')" title="القيمة المطلقة">|x|</button>
+    <button onclick="appendText('Math.PI')" title="π">π</button>
+    <button onclick="appendText('Math.E')" title="الثابت e">e</button>
+    <button onclick="appendText('Math.sin(')" title="جيب الزاوية">sin</button>
+    <button onclick="appendText('Math.cos(')" title="جيب تمام الزاوية">cos</button>
+    <button onclick="appendText('Math.tan(')" title="ظل الزاوية">tan</button>
+    <button onclick="appendText('Math.log10(')" title="لوغاريتم الأساس 10">log</button>
+    <button onclick="appendText('Math.log(')" title="اللوغاريتم الطبيعي ln">ln</button>
+    <button onclick="appendText('(')" title="فتح قوس">(</button>
+    <button onclick="appendText(')')" title="غلق قوس">)</button>
   </div>
 
-  <script>
-    const display = document.getElementById('display');
-    const body = document.body;
+  <div class="theme-toggle-container">
+    <button id="theme-toggle" aria-label="تبديل الوضع الليلي والفاتح">🌓</button>
+  </div>
+</div>
 
-    function appendValue(value) {
-      if (display.innerText === '0' || display.innerText === 'خطأ') {
-        display.innerText = value;
+<script>
+  const display = document.getElementById('display');
+  let memory = 0;
+
+  function appendText(text) {
+    if (display.textContent === '0' || display.textContent === 'خطأ') {
+      display.textContent = text;
+    } else {
+      display.textContent += text;
+    }
+  }
+
+  function clearDisplay() {
+    display.textContent = '0';
+  }
+
+  function backspace() {
+    if (display.textContent.length > 1) {
+      display.textContent = display.textContent.slice(0, -1);
+    } else {
+      display.textContent = '0';
+    }
+  }
+
+  function toggleSign() {
+    try {
+      let val = eval(display.textContent);
+      val = -val;
+      display.textContent = val.toString();
+    } catch {
+      display.textContent = 'خطأ';
+    }
+  }
+
+  function calculate() {
+    try {
+      let expr = display.textContent.replace(/%/g, '/100');
+      let result = eval(expr);
+      if (result === Infinity || result === -Infinity || isNaN(result)) {
+        display.textContent = 'خطأ';
       } else {
-        display.innerText += value;
+        display.textContent = result.toString();
       }
+    } catch {
+      display.textContent = 'خطأ';
     }
+  }
 
-    function clearDisplay() {
-      display.innerText = '0';
+  // الذاكرة
+  function memoryClear() {
+    memory = 0;
+  }
+  function memoryRecall() {
+    if (display.textContent === '0' || display.textContent === 'خطأ') {
+      display.textContent = memory.toString();
+    } else {
+      display.textContent += memory.toString();
     }
+  }
+  function memoryAdd() {
+    try {
+      let val = eval(display.textContent.replace(/%/g, '/100'));
+      memory += val;
+    } catch {}
+  }
+  function memorySubtract() {
+    try {
+      let val = eval(display.textContent.replace(/%/g, '/100'));
+      memory -= val;
+    } catch {}
+  }
 
-    function deleteLast() {
-      if (display.innerText.length > 1) {
-        display.innerText = display.innerText.slice(0, -1);
-      } else {
-        display.innerText = '0';
-      }
-    }
+  // تبديل الوضع الليلي والفاتح
+  const themeBtn = document.getElementById('theme-toggle');
+  const root = document.documentElement;
 
-    function calculate() {
-      try {
-        display.innerText = eval(display.innerText);
-      } catch {
-        display.innerText = 'خطأ';
-      }
-    }
+  // قراءة الثيم من localStorage أو ضبط الوضع الافتراضي
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  root.setAttribute('data-theme', savedTheme);
 
-    function toggleMode() {
-      body.classList.toggle('dark-mode');
-      body.classList.toggle('light-mode');
-    }
-  </script>
+  themeBtn.onclick = () => {
+    const current = root.getAttribute('data-theme');
+    const newTheme = current === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+  };
+</script>
+
 </body>
 </html>
